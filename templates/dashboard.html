@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2.9.1/dist/umd/popper.min.js" charset="utf-8"></script>
+<script>
+function main(){
+    var xhr=new XMLHttpRequest();
+    xhr.open('GET','filedata');
+    xhr.onload=function(){
+    var json=JSON.parse(this.responseText);
+    var out='';
+    for(i=0;i<json.length-1;i++){
+    if(json[i].type!="folder")
+    out+='<div onclick="openfile(\''+json[i].path+'\');" class="h-64 w-52 flex grid grid-rows-2 flex-nowrap relative"><i class="fa-10x h-40 fa-regular fa-file"></i><span class="h-12 w-32 m-3 absolute bottom-4 text-clip overflow-hidden">'+json[i].name+'</span></div>';
+    }
+    document.getElementById("info").innerHTML=out;
+    }
+    xhr.send();
+}
+function openfile(x){
+    document.getElementById("info").innerHTML='';
+    document.getElementById("info1").innerHTML='<iframe src="'+x+'" width="100%" height="100%" class="h-96 w-full">';
+}
+window.onload=main;
+</script>
+<body class="flex h-screen">
+<div class="flex flex-col flex-1 w-full overflow-y-auto">
+    <header class="z-10 py-4 lg:h-20 h-28 bg-slate-200">
+        <div class="container flex items-center justify-between h-full px-6 mx-auto">
+        <div onclick="window.location.href='signout';" class="hover:cursor-pointer absolute right-4">
+            <i class="lg:hidden fa-4x fa-solid fa-right-from-bracket"></i><i class="hidden lg:inline fa-solid fa-right-from-bracket"></i>
+            <div class="hidden lg:inline">Sign Out</div>
+        </div>
+        </div>
+    </header>
+    <div id="full" class="h-full overflow-y-auto">
+    <div id="info" class="grid grid-cols-2 m-4 ml-10 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8"></div>
+    <div id="info1" class=""></div>
+    </div>
+</div>
+</body>
+</html>
